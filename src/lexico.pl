@@ -15,7 +15,7 @@ pronome(_) --> [que].
 pron_int(s-_, listar, qual) --> [qual].
 pron_int(p-_, listar, quais) --> [quais].
 pron_int(_, listar, que) --> [que].
-pron_int(s-m, somar, quanto) --> [quanto].
+pron_int(s-m, avaliar, quanto) --> [quanto].
 pron_int(p-m, contar, quantos) --> [quantos].
 pron_int(p-f, contar, quantas) --> [quantas].
 pron_int(_, localizar, onde) --> [onde].
@@ -97,9 +97,9 @@ verbo(s, disponibiliza)   -->   [disponibiliza].
 verbo(p, disponibiliza)   -->   [disponibilizam].
 verbo(s, disponibiliza)   -->   [possui].
 verbo(p, disponibiliza)   -->   [possuem].
-verbo(s, categoria)   -->   [possui].
-verbo(p, categoria)   -->   [possuem].
-verbo(_, categoria)   -->   [tem].
+verbo(s, categorizado)   -->   [possui].
+verbo(p, categorizado)   -->   [possuem].
+verbo(_, categorizado)   -->   [tem].
 verbo(_, disponibiliza)   -->   [tem].
 verbo(_, disponibiliza)   -->   [ha].
 verbo(s, localizacao)   -->   [fica].
@@ -107,6 +107,7 @@ verbo(p, localizacao)   -->   [ficam].
 verbo(_, localizacao)   -->   [ha].
 verbo(s, localizacao)   -->   [encontra-se].
 verbo(s, ser)   -->   [e_].   % TODO correct
+verbo(s, localizacao)   -->   [e_].   % TODO correct
 verbo(p, ser)   -->   [sao].
 verbo(s, localizacao)   -->   [esta].
 verbo(p, localizacao)   -->   [estao].

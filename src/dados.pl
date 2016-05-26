@@ -19,25 +19,25 @@ localizacao(2, 'lisboa').
 localizacao(3, 'viana').
 localizacao(4, 'aveiro').
 
-hotel('star inn', 1, 3, [1, 2, 6, 10, 11, 12, 9], [55-'single'-[], 80-'duplo'-['vista-jardim']]).
+hotel('star inn', 1, 3, [1, 2, 6, 10, 11, 12, 9], [55-'single'-[], 80-'duplo'-['vista jardim'], 80-'duplo'-['vista praca']]).
 
-hotel('quality inn portus cale', 1, 4, [1, 6, 8, 2, 10, 11, 13, 15, 12, 9], [85-'single'-[], 130-'duplo'-['cama extra'], 180-'suite'-[], 230-'suite executiva'-[]]).
+hotel('quality inn portus cale', 1, 4, [1, 6, 8, 2, 10, 11, 13, 15, 12, 9], [85-'single'-[], 130-'duplo'-['cama extra'], 180-'suite'-[], 230-'executivo'-[]]).
 
-hotel('intercontinental', 1, 5, [5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-[], 190-'duplo'-['cama extra'], 250-'suite'-[], 340-'suite executiva'-['vista-praça']]).
+hotel('intercontinental', 1, 5, [5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-[], 190-'duplo'-['cama extra'], 250-'suite'-[], 340-'executivo'-['vista praca']]).
 
-hotel('corinthia', 2, 5, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-[], 160-'duplo'-['cama extra'], 190-'suite'-[]]).
+hotel('corinthia', 2, 5, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-[], 160-'duplo'-['cama extra'], 190-'executivo'-[]]).
 
 hotel('rossio garden', 2, 3, [3, 4, 6, 1, 10, 11, 12, 14, 9], [95-'single'-[], 150-'duplo'-['cama extra']]).
 
 hotel('eduardo VII', 2, 3, [6, 1, 10, 11, 12, 9], [60-'single'-[], 100-'duplo'-['cama extra']]).
 
-hotel('flor-de-Sal', 3, 4, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-['vista-mar'], 160-'duplo'-['cama extra', 'vista-mar'], 190-'suite'-['vista-mar']]).
+hotel('flor-de-Sal', 3, 4, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-['vista mar'], 160-'duplo'-['cama extra', 'vista mar'], 190-'executivo'-['vista mar']]).
 
-hotel('axis', 3, 4, [3, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [85-'single'-['vista-jardim'], 110-'duplo'-['cama extra', 'vista-jardim'], 170-'suite'-['vista-jardim']]).
+hotel('axis', 3, 4, [3, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [85-'single'-['vista jardim'], 110-'duplo'-['cama extra', 'vista jardim'], 170-'executivo'-['vista jardim']]).
 
 hotel('veneza', 4, 3, [3, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 9], [65-'single'-[], 85-'duplo'-['cama extra']]).
 
-hotel('moliceiro', 4, 4, [3, 5, 6, 8, 1, 2, 10, 11, 12, 9], [95-'single'-[], 110-'duplo'-['cama extra'], 170-'suite'-[]]).
+hotel('moliceiro', 4, 4, [3, 5, 6, 8, 1, 2, 10, 11, 12, 9], [95-'single'-[], 110-'duplo'-['cama extra'], 170-'executivo'-[]]).
 
 adicionar_hotel(Nome, Localizacao, Estrelas):-
 	localizacao(LocalizacaoId, Localizacao),
@@ -53,10 +53,31 @@ adicionar_quarto(Hotel, Preco-Tipo-Caracteristicas):-
   retractall(hotel(Hotel, Location, Stars, Services, Rooms)),
 	assertz(hotel(Hotel, Location, Stars, Services, [Preco-Tipo-Caracteristicas|Rooms])).
 
-disponibiliza(Hotel, Servico):-
-	hotel(Hotel, _, _, Services, _),
-	servico(Service, Servico),
-	member(Service, Services).
+disponibiliza(_, []).
+disponibiliza(Hotel, [Servico|Outros]):-
+	hotel(Hotel, _, _, Servicos, _),
+	servico(ServicoId, Servico),
+	member(ServicoId, Servicos), !,
+	disponibiliza(Hotel, Outros).
+
+quarto(_, []).
+quarto(Hotel, [Preco-Tipo-Caracteristicas|Outros]):-
+	var(Caracteristicas),
+	hotel(Hotel, _, _, _, Quartos),
+	append(_,[Preco-Tipo-Caracteristicas|_], Quartos),
+	quarto(Hotel, Outros).
+
+quarto(Hotel, [Preco-Tipo-Caracteristicas|Outros]):-
+	nonvar(Caracteristicas),
+	hotel(Hotel, _, _, _, Quartos),
+	append(_,[Preco-Tipo-Caracteristicas1|_], Quartos),
+	quarto_caractertisticas(Caracteristicas, Caracteristicas1),
+	quarto(Hotel, Outros).
+
+quarto_caractertisticas([], _).
+quarto_caractertisticas([Caracteristica | Outras], Caracteristicas):-
+	member(Caracteristica, Caracteristicas),
+	quarto_caractertisticas(Outras, Caracteristicas).
 
 localiza(Hotel, Localizacao):-
 	hotel(Hotel, Localizacao, _, _, _).

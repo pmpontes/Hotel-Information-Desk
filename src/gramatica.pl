@@ -17,18 +17,18 @@ set_context(_, _).
 % frase
 %frase(declaracao, _, Q) --> frase_afir([], Q), [.]. % adicionar informação à base de conhecimento
 frase(afirmacao, _, Q) --> frase_afir([], Q), ([?]; []).
-frase(interrogacao, TipoQ, Q) --> frase_int(TipoQ, [], Q).
+frase(interrogacao, TipoQ, Q) --> frase_int(TipoQ, [], Q), ([?]; []).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % interrogações
-%%%%% TODO usar QIn para contexto 'e'
-frase_int(TipoQ, QIn, [At, ROut]) --> [e], modificador_nominal_ext(_, [], ROut).
+%%%%% TODO adaptar para contexto 'e'
+frase_int(contexto, _, [_, ROut]) --> [e], modificador_nominal_ext(_, [], ROut).
 frase_int(TipoQ, QIn, [At, ROut]) --> sint_inter(_, At, [], R1, TipoQ, que), sint_verbal_ext(_, At, R1, ROut).
 frase_int(TipoQ, QIn, [At, ROut]) --> sint_inter(_, At, [], R1, TipoQ, qual), sint_verbal_ext(_, At, R1, ROut).
 frase_int(TipoQ, QIn, [At, ROut]) --> sint_inter(N, At, [], R1, TipoQ, Pi), {Pi \= que, Pi\= qual}, sint_verbal_ext(N, At, R1, ROut).
 
 sint_inter(N, At, RIn, ROut, TipoQ, Pi) --> pron_int(N-G, TipoQ, Pi), sint_nominal_inter(N-G, At, RIn, ROut).
-sint_inter(N, _, _, [], TipoQ, Pi) --> pron_int(N-_, TipoQ, Pi).
+sint_inter(N, _, R, R, TipoQ, Pi) --> pron_int(N-_, TipoQ, Pi).
 
 sint_nominal_inter(N-G, At, RIn, [At-ROut | RIn]) --> (verbo(N, ser) ; []), determinante(N-G), nome(N-G, At), modificador_nominal_ext(N-G, [], ROut), pronome(N-G). % Quais [são] os hotéis [do porto] que, Qual [é] o hotel que é mais caro...
 sint_nominal_inter(N-_, At, R, R) --> nome(N-_, At). % Quanto custa, Que serviços disponibiliza,...
