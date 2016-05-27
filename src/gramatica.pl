@@ -4,8 +4,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % frase
 frase(interrogacao, TipoQ, Q) --> frase_int(TipoQ, Q), ([?]; []).
-frase(afirmacao, _, Q) --> frase_afir([], Q), ([?]; []).
-frase(declaracao, _, Q) --> frase_afir([], Q), [.].
+frase(afirmacao, _, Q) --> frase_afir([], Q), ([.]; [?]; []).
+frase(declaracao, _, Q) --> frase_afir([], Q), [;].
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % interrogações

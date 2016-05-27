@@ -39,7 +39,7 @@ hotel('corinthia', 2, 5, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [9
 
 hotel('rossio garden', 2, 3, [3, 4, 6, 1, 10, 11, 12, 14, 9], [95-'single'-[], 150-'duplo'-['cama extra'],  200-'executivo'-['cama extra']]).
 
-hotel('eduardo VII', 2, 3, [6, 1, 10, 11, 12, 9], [60-'single'-[], 100-'duplo'-['cama extra']]).
+hotel('eduardo vii', 2, 3, [6, 1, 10, 11, 12, 9], [60-'single'-[], 100-'duplo'-['cama extra']]).
 
 hotel('flor-de-Sal', 3, 4, [3, 4, 5, 6, 7, 8, 1, 2, 10, 11, 12, 13, 14, 15, 9], [95-'single'-['vista mar'], 160-'duplo'-['cama extra', 'vista mar'], 190-'executivo'-['vista mar']]).
 

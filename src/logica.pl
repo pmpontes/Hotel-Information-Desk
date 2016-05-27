@@ -7,7 +7,7 @@ processar(Frase, Resposta):-
   (frase(TipoF, TipoQ, Q, Frase, []), !,
   write('Frase valida;\n'), write(TipoF-TipoQ), write(':'), write(Q), !,
   analisar(TipoF, TipoQ, Q, Resposta);
-  Resposta=erro_gramatical), !.
+  Resposta='Erro gramatical.'), !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % contexto
@@ -121,8 +121,8 @@ concordar(H-L-C-S-Q, Resposta):-
   findall(H-L-C-S-Q, (hotel(H,L1,Cat,_,_), localizacao(L1, L), analisa_categoria(Cat, C), analisa_servicos(H, S), analisa_quartos(H, Q)), Resultados),
   length(Resultados, N),
   (N>=1, !,
-  Resposta = 'Sim.';
-  Resposta = 'Nao').
+  Resposta = 'Certo!';
+  Resposta = 'Errado...').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % memorizar
@@ -130,28 +130,28 @@ concordar(H-L-C-S-Q, Resposta):-
 memorizar(H-L-(igual-C)-S-Q, Resposta):-
   nonvar(H), nonvar(L), nonvar(C), var(S), var(Q),
   (adicionar_hotel(H, L, C), !,
-    Resposta=novo_hotel;
-    Resposta=falhou).
+    Resposta='Novo hotel criado.';
+    Resposta=erro_memoria).
 
 memorizar(H-_-(igual-C)-S-Q, Resposta):-
   nonvar(H), nonvar(C), var(S), var(Q),
   (classificar_hotel(H, C),!,
-    Resposta=nova_classificacao;
-    Resposta=falhou).
+    Resposta='Categoria atualizada.';
+    Resposta=erro_memoria).
 
 memorizar(H-_-_-S-Q, Resposta):-
   nonvar(H), nonvar(S), var(Q),
   (adicionar_servicos_hotel(H, S),!,
-    Resposta=novo_servico;
-    Resposta=falhou).
+    Resposta='Novo servico associado.';
+    Resposta=erro_memoria).
 
 memorizar(H-_-_-S-Q, Resposta):-
   nonvar(H), var(S), nonvar(Q),
   (adicionar_quartos(H, Q),!,
-    Resposta=novo_quarto;
-    Resposta=falhou).
+    Resposta='Novo quarto associado.';
+    Resposta=erro_memoria).
 
-memorizar(_, falhou).
+memorizar(_, erro_memoria).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % responder
@@ -288,7 +288,8 @@ test:-
   write('verificacao de contexto concluida.'), nl, !,
 
   nl, write('verificacao de memorizacao...'), nl, !,
-  s([o, hotel, ferreiro, fica, em, aveiro, e, tem, 3, estrelas, '.'],[]),!,
+  s([o, hotel, ferreiro, fica, em, aveiro, e, tem, 3, estrelas, ';'],[]),!,
+  s([o, hotel, ferreiro, tem, 4, estrelas, ';'],[]),!,
   s([o, hotel, ferreiro, fica, em, aveiro, e, tem, 3, estrelas, '?'],[]),!,
   write('verificacao de memorizacao concluida.'), nl, !,
 
