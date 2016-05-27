@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<head>
+  <title>Sobre hotéis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <script>
+  function getPrologRequest(requestString, onSuccess, onError, port){
+    var requestPort = port || 8081;
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+
+    request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
+    request.onerror = onError || function(){console.log("Error waiting for response");};
+
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send();
+  }
+
+  function removeAccents(str) {
+    var removalMap = {
+      'A'  : /[AⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄ]/g,
+      'AA' : /[Ꜳ]/g,
+      'AE' : /[ÆǼǢ]/g,
+      'AO' : /[Ꜵ]/g,
+      'AU' : /[Ꜷ]/g,
+      'AV' : /[ꜸꜺ]/g,
+      'AY' : /[Ꜽ]/g,
+      'B'  : /[BⒷＢḂḄḆɃƂƁ]/g,
+      'C'  : /[CⒸＣĆĈĊČÇḈƇȻꜾ]/g,
+      'D'  : /[DⒹＤḊĎḌḐḒḎĐƋƊƉꝹ]/g,
+      'DZ' : /[ǱǄ]/g,
+      'Dz' : /[ǲǅ]/g,
+      'E'  : /[EⒺＥÈÉÊỀẾỄỂẼĒḔḖĔĖËẺĚȄȆẸỆȨḜĘḘḚƐƎ]/g,
+      'F'  : /[FⒻＦḞƑꝻ]/g,
+      'G'  : /[GⒼＧǴĜḠĞĠǦĢǤƓꞠꝽꝾ]/g,
+      'H'  : /[HⒽＨĤḢḦȞḤḨḪĦⱧⱵꞍ]/g,
+      'I'  : /[IⒾＩÌÍÎĨĪĬİÏḮỈǏȈȊỊĮḬƗ]/g,
+      'J'  : /[JⒿＪĴɈ]/g,
+      'K'  : /[KⓀＫḰǨḲĶḴƘⱩꝀꝂꝄꞢ]/g,
+      'L'  : /[LⓁＬĿĹĽḶḸĻḼḺŁȽⱢⱠꝈꝆꞀ]/g,
+      'LJ' : /[Ǉ]/g,
+      'Lj' : /[ǈ]/g,
+      'M'  : /[MⓂＭḾṀṂⱮƜ]/g,
+      'N'  : /[NⓃＮǸŃÑṄŇṆŅṊṈȠƝꞐꞤ]/g,
+      'NJ' : /[Ǌ]/g,
+      'Nj' : /[ǋ]/g,
+      'O'  : /[OⓄＯÒÓÔỒỐỖỔÕṌȬṎŌṐṒŎȮȰÖȪỎŐǑȌȎƠỜỚỠỞỢỌỘǪǬØǾƆƟꝊꝌ]/g,
+      'OI' : /[Ƣ]/g,
+      'OO' : /[Ꝏ]/g,
+      'OU' : /[Ȣ]/g,
+      'P'  : /[PⓅＰṔṖƤⱣꝐꝒꝔ]/g,
+      'Q'  : /[QⓆＱꝖꝘɊ]/g,
+      'R'  : /[RⓇＲŔṘŘȐȒṚṜŖṞɌⱤꝚꞦꞂ]/g,
+      'S'  : /[SⓈＳẞŚṤŜṠŠṦṢṨȘŞⱾꞨꞄ]/g,
+      'T'  : /[TⓉＴṪŤṬȚŢṰṮŦƬƮȾꞆ]/g,
+      'TZ' : /[Ꜩ]/g,
+      'U'  : /[UⓊＵÙÚÛŨṸŪṺŬÜǛǗǕǙỦŮŰǓȔȖƯỪỨỮỬỰỤṲŲṶṴɄ]/g,
+      'V'  : /[VⓋＶṼṾƲꝞɅ]/g,
+      'VY' : /[Ꝡ]/g,
+      'W'  : /[WⓌＷẀẂŴẆẄẈⱲ]/g,
+      'X'  : /[XⓍＸẊẌ]/g,
+      'Y'  : /[YⓎＹỲÝŶỸȲẎŸỶỴƳɎỾ]/g,
+      'Z'  : /[ZⓏＺŹẐŻŽẒẔƵȤⱿⱫꝢ]/g,
+      'a'  : /[aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ]/g,
+      'aa' : /[ꜳ]/g,
+      'ae' : /[æǽǣ]/g,
+      'ao' : /[ꜵ]/g,
+      'au' : /[ꜷ]/g,
+      'av' : /[ꜹꜻ]/g,
+      'ay' : /[ꜽ]/g,
+      'b'  : /[bⓑｂḃḅḇƀƃɓ]/g,
+      'c'  : /[cⓒｃćĉċčçḉƈȼꜿↄ]/g,
+      'd'  : /[dⓓｄḋďḍḑḓḏđƌɖɗꝺ]/g,
+      'dz' : /[ǳǆ]/g,
+      'e'  : /[eⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ]/g,
+      'f'  : /[fⓕｆḟƒꝼ]/g,
+      'g'  : /[gⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ]/g,
+      'h'  : /[hⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ]/g,
+      'hv' : /[ƕ]/g,
+      'i'  : /[iⓘｉìíîĩīĭïḯỉǐȉȋịįḭɨı]/g,
+      'j'  : /[jⓙｊĵǰɉ]/g,
+      'k'  : /[kⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ]/g,
+      'l'  : /[lⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇ]/g,
+      'lj' : /[ǉ]/g,
+      'm'  : /[mⓜｍḿṁṃɱɯ]/g,
+      'n'  : /[nⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ]/g,
+      'nj' : /[ǌ]/g,
+      'o'  : /[oⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔꝋꝍɵ]/g,
+      'oi' : /[ƣ]/g,
+      'ou' : /[ȣ]/g,
+      'oo' : /[ꝏ]/g,
+      'p'  : /[pⓟｐṕṗƥᵽꝑꝓꝕ]/g,
+      'q'  : /[qⓠｑɋꝗꝙ]/g,
+      'r'  : /[rⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ]/g,
+      's'  : /[sⓢｓßśṥŝṡšṧṣṩșşȿꞩꞅẛ]/g,
+      't'  : /[tⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ]/g,
+      'tz' : /[ꜩ]/g,
+      'u'  : /[uⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ]/g,
+      'v'  : /[vⓥｖṽṿʋꝟʌ]/g,
+      'vy' : /[ꝡ]/g,
+      'w'  : /[wⓦｗẁẃŵẇẅẘẉⱳ]/g,
+      'x'  : /[xⓧｘẋẍ]/g,
+      'y'  : /[yⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ]/g,
+      'z'  : /[zⓩｚźẑżžẓẕƶȥɀⱬꝣ]/g,
+    };
+
+    for(var latin in removalMap) {
+      var nonLatin = removalMap[latin];
+      str = str.replace(nonLatin , latin);
+    }
+
+    return str;
+  }
+  var query;
+  function makeRequest(){
+    // Get Parameter Values
+    query = $("#query").val().trim();
+
+    if(query==""){
+      return;
+    }
+
+    $("#request").val('<span class="glyphicon glyphicon-search"></span>' + query);
+
+    query = query.replace("!", " !");
+    query = query.replace("?", " ?");
+    query = query.replace(".", " .");
+
+    var request = query.split(" ");
+    var requestString = "processar([" + request + '])';
+    requestString = removeAccents(requestString);
+    requestString = requestString.toLowerCase();
+    console.log(requestString);
+
+    // Make Request
+    getPrologRequest(requestString, handleReply);
+    $("#query").val("");
+
+    $("#search").hide();
+    $("#search-result").show();
+  }
+
+  function search(){
+    $("#search").show();
+    $("#search-result").hide();
+  }
+  //Handle the Reply
+  function handleReply(data){
+    var reply = data.target.response;
+
+    console.log(reply);
+
+    if(reply === 'erro_desconhecido'){
+      $("#request").html('<span class="glyphicon glyphicon-exclamation-sign"></span> Oops, ocorreu um erro...');
+      return;
+    }
+
+    if(reply === 'erro_gramatical'){
+      console.log(reply + "eoeroiwerujhsdfjhbsdkhf");
+      $("#request").html('<span class="glyphicon glyphicon-exclamation-sign"></span> Não foi possível perceber o que pretende...');
+      return;
+    }
+
+    $("#request").html('<span class="glyphicon glyphicon-search"></span> ' + query);
+
+    reply = reply.replace("[", "");
+    reply = reply.replace("]", "");
+    reply = reply.split(",");
+
+    console.log(query);
+    console.log(reply);
+
+    html = '<ul class="text-center">';
+    for(r in reply){
+      html += '<li>' + reply[r] + ' </li>';
+    }
+    html += '</ul>';
+
+    $("#result").html(html);
+  }
+
+  $(document).ready(function(){$("#search-result").hide();});
+
+  </script>
+
+  <style>
+  body {
+    font: 20px Montserrat, sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+  .bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 {
+    background-color: #ffffff; /* White */
+    color: #555555;
+  }
+  .bg-4 {
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+  }
+  .container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+  .navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px;
+  }
+  .navbar-nav  li a:hover {
+    color: #1abc9c !important;
+  }
+  .glyphicon.top-icon {
+    font-size: 40px;
+  }
+  ul{
+    list-style-type: none;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <h1 class="navbar-brand">Sobre hotéis...</h1>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#search"><span class="top-icon glyphicon glyphicon-comment"></span></a></li>
+          <li><a href="#instructions"><span class="top-icon glyphicon glyphicon-book"></span></a></li>
+          <li><a href="#authors"><span class="top-icon glyphicon glyphicon-education"></span></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- First Container -->
+  <div id="search" class="container-fluid bg-1 text-center">
+    <h2 class="margin"><span class="glyphicon glyphicon-search"></span> Precisa de ajuda com um hotel?</h2>
+    <div class="container-fluid bg-1 text-center">
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <div class="input-group">
+            <input id="query" type="text" class="form-control" placeholder="Coloque uma questão, tire uma dúvida ou adicione informação..." />
+            <span class="input-group-btn">
+              <button onclick="makeRequest()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-3"></div>
+      </div><!-- /.row -->
+    </div>
+  </div>
+
+  <!-- Container -->
+  <div id="search-result" class="container-fluid bg-1 text-center">
+    <h2 id="request" class="margin"><span class="glyphicon glyphicon-time"></span> A processar o seu pedido...</h2>
+    <div class="container-fluid bg-1 text-center">
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div id="result" class="col-lg-6">
+
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-3">
+          <button onclick="search()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span> Tentar outra pesquisa...</button>
+        </div>
+      </div><!-- /.row -->
+    </div>
+  </div>
+
+  <!-- Third Container (Grid) -->
+  <div id="instructions" class="container-fluid bg-3 text-center">
+    <h2 class="margin"><span class="glyphicon glyphicon-book"></span> Como usar?</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <h3 class="margin"><span class="glyphicon glyphicon-question-sign"></span> Perguntar</h3>
+        <p>Perguntar não ofende! Coloque questões!</p>
+        <p>Até pode terminar a sua pergunta com um ponto de interrogacao (?)</p>
+      </div>
+      <div class="col-sm-4">
+        <h3 class="margin"><span class="glyphicon glyphicon-ok"></span> Confirmar</h3>
+        <p>Tem alguma dúvida em relação a hotéis ou aos serviços que prestam? Tire-as a limpo!</p>
+        <p>Pode terminar a frase com um ponto de interrogacao (?)</p>
+      </div>
+      <div class="col-sm-4">
+        <h3 class="margin"><span class="glyphicon glyphicon-plus"></span> Adicionar</h3>
+        <p>Sabe muita coisa sobre hotéis? Partilhe essa informação, adicionando-a à base de conhecimento!</p>
+        <p>Certifique-se só que termina a frase com um ponto final (.)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Container -->
+  <div id="authors" class="container-fluid bg-2 text-center">
+    <h2 class="margin"> Um projeto de:</h2>
+    <ul class="text-center">
+      <li><span class="glyphicon glyphicon-education"></span> Gil Domingues</li>
+      <li><span class="glyphicon glyphicon-education"></span> Pedro Pontes</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <footer class="container-fluid bg-4 text-center">
+    <p>FEUP | MIEIC | Inteligência Artificial | 2016</p>
+  </footer>
+
+</body>
+</html>
