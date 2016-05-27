@@ -5,7 +5,7 @@
 % processar
 processar(Frase, Resposta):-
   (frase(TipoF, TipoQ, Q, Frase, []), !,
-  write('Frase valida;\n'), write(TipoF-TipoQ), write(':'), write(Q), !,
+  write('Frase valida\n'), write(TipoF-TipoQ), write('::'), write(Q), !,
   analisar(TipoF, TipoQ, Q, Resposta);
   Resposta='Erro gramatical.'), !.
 
@@ -38,19 +38,17 @@ prepare_query(QIn, QOut),!,
 memorizar(QOut, Resposta).
 
 analisar(interrogacao, TipoQ, [At, QIn], Resposta):-
-nl, write('BEFORE QUERY: '), write(QIn),nl,
 prepare_query(QIn, QOut), !,
-write('ATRIBUTO: '), write(At),nl,
 (TipoQ=contexto, !,
-  ( write('Contexto? '), retomar_contexto(QOut, TipoQ2, At, Q), nl, write('Contexto: '), write(Q));
+  retomar_contexto(QOut, TipoQ2, At, Q) ;
   novo_contexto(TipoQ, At, QOut), Q=QOut, TipoQ2=TipoQ),
 responder(TipoQ2, At, Q, Resposta).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare_query
 prepare_query(QIn, H-L-C-S-Q):-
-  flatten(QIn, QFlat), nl, write(QFlat),nl, !,
-  parse(QFlat, _, H-L-C-S-Q), write('PARSED   '), write(H-L-C-S-Q), nl.
+  flatten(QIn, QFlat),
+  parse(QFlat, _, H-L-C-S-Q), write('QUERY :: '), write(H-L-C-S-Q), nl.
 
 parse([], Final, Final).
 
@@ -106,7 +104,7 @@ parse([quarto-Restricoes | R], H-L-C-S-Q, Final):-
 parse([servico-Restricoes | R], H-L-C-_-Q, Final):-
   parse(R, H-L-C-Restricoes-Q, Final).
 
-parse(R, Q, Q):- write('ERRO: Analise do pedido falhou: '), write(R).
+parse(_, Q, Q).
 
 parse_quarto([], Q, Q).
 parse_quarto([vista-Restricao | R], Custo-Tipo-Car, QOut):-
