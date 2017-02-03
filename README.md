@@ -70,3 +70,22 @@ For the implementation, it was considered a division into five modules:
 • a module responsible for generating responses;
 
 • a user interface module.
+
+##Getting Started
+
+In order to have the system running on your local machine for development and testing purposes see the notes below.
+
+###Prerequisites
+
+• SICStus Prolog - to run the program in Prolog;
+
+• Mongoose - web server to connect; save the .exe file in the project folder.
+
+###Installing
+To test the application follow these steps:
+
+1. Open SICStus console
+2. Go to File->Consult
+3. Navigate to the folder reader\prolog and select the file server.pl
+4. Write "servidor." on the console
+5. Execute mongoose and navigate to the src folder
