@@ -1,5 +1,5 @@
 #Summary
-Developed for the Artificial Intelligence course - this application allows to obtain and define hotel information, using natural language, in Portuguese, as if it were an information desk.
+Developed for the Artificial Intelligence course - this application allows to define and obtain hotel information, using natural language, in Portuguese, as if it were an information desk.
 
 #Key-words
 Definite Clause Grammars, HTML, JavaScript, Natural Language, Prolog, Knowledge Representation.
