@@ -1,5 +1,5 @@
 #Summary
-Developed for an Artificial Intelligence course - this application allows to define and obtain hotel information, using natural language, in Portuguese, as if it were an information desk.
+Developed for an Artificial Intelligence course - AIAD - this application allows to define and obtain hotel information, using natural language, in Portuguese, as if it were an information desk.
 
 #Key-words
 Definite Clause Grammars, HTML, JavaScript, Natural Language, Prolog, Knowledge Representation.
