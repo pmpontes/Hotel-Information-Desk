@@ -1,11 +1,13 @@
-#Summary
+#Hotel-Information-Desk
+
+##Summary
 Developed for an Artificial Intelligence course - AIAD - this application allows to define and obtain hotel information, using natural language, in Portuguese, as if it were an information desk.
 
-#Key-words
+##Key-words
 Definite Clause Grammars, HTML, JavaScript, Natural Language, Prolog, Knowledge Representation.
 
-#Examples of interaction supported:
-##Statements
+##Examples of interaction supported:
+###Statements
 
 ####O hotel Moliceiro fica em Espanha e possui 4 estrelas.
 ####-Erro gramatical.
@@ -23,7 +25,7 @@ The information is inconsistent with the knowledge base.
 ####-Sim!
 The information is consistent with the knowledge base.
 
-##Questions
+###Questions
 
 ####Quantos hoteis de Lisboa possuem categoria inferior a 4 e quartos executivos?
 ####-1
@@ -35,7 +37,6 @@ The information is consistent with the knowledge base.
 ####-[Moliceiro]
 Example of a question using context, introduced by the 'e' particle.
 
-
 ####Que serviços disponibiliza o hotel Eduardo VIII?
 ####-[serviço-de-quartos, bar, estacionamento, wi-fi, pequeno-almoço, ar-condicionado]
 
@@ -45,7 +46,7 @@ Example of a question using context, introduced by the 'e' particle.
 ####Quais os hotéis de Viana que possuem categoria igual a 4 e quartos com vista de mar?
 ####[Flor de Sal]
 
-##Declarations
+###Declarations
 ####O Hotel Ferreiro fica em Aveiro e tem 3 estrelas;
 ####-Novo hotel criado.
 
