@@ -91,6 +91,7 @@ The program can be used exclusively from the SICStus Prolog interface or from a 
 3. Navigate to the folder src/ and select the file sobre_hoteis.pl
 
    ####SICStus Prolog
+   
 4. Enter the command:
 
    processar(+Phrase, -Response).
@@ -101,6 +102,7 @@ where Phrase represents a list with the words of the phrase.
 For operational reasons, all the words in the lexicon are in lowercase letters without stress. In particular, the verbal form 'é' is defined as 'e_', so as to distinguish it from the conjunction 'e'. If in doubt, consult the file "lexico.pl".
 
    ####Web interface
+   
 4. Enter, without arguments, the command 'servidor.';
 5. Execute mongoose and navigate to the src folder
 6. Open the index.html file;
