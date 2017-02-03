@@ -86,6 +86,6 @@ To test the application follow these steps:
 
 1. Open SICStus console
 2. Go to File->Consult
-3. Navigate to the folder reader\prolog and select the file server.pl
+3. Navigate to the folder src/ and select the file sobre_hoteis.pl
 4. Write "servidor." on the console
 5. Execute mongoose and navigate to the src folder
